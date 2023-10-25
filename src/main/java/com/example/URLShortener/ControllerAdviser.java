@@ -29,4 +29,13 @@ public class ControllerAdviser {
         );
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);//404
     }
+
+    @ExceptionHandler
+    private ResponseEntity<UrlErrorResponse> handleException(Exception e) {
+        UrlErrorResponse response = new UrlErrorResponse(
+                e.getMessage(),
+                System.currentTimeMillis()
+        );
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);//404
+    }
 }

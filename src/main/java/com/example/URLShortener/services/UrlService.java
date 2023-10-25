@@ -1,11 +1,12 @@
 package com.example.URLShortener.services;
 
-import com.example.URLShortener.models.Url;
+import com.example.URLShortener.models.UrlEntity;
 import com.example.URLShortener.repositories.ShortUrlRepository;
 import com.example.URLShortener.util.UrlNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -23,21 +24,21 @@ public class UrlService {
         this.shortUrlRepository = shortUrlRepository;
     }
 
-    public List<Url> findAll() {
+    public List<UrlEntity> findAll() {
         return shortUrlRepository.findAll();
     }
 
-    public Url findByShortUrl(String shortUrl) {
-        Optional<Url> foundUrl = shortUrlRepository.findByShortUrl(shortUrl);
+    public UrlEntity findByShortUrl(String shortUrl) {
+        Optional<UrlEntity> foundUrl = shortUrlRepository.findByShortUrl(shortUrl);
         return foundUrl.orElseThrow(UrlNotFoundException::new);
     }
 
-    public Optional<Url> findByFullUrl(String fullUrl) {
+    public Optional<UrlEntity> findByFullUrl(String fullUrl) {
         return shortUrlRepository.findByFullUrl(fullUrl);
     }
 
     @Transactional
-    public Url save(final String fullUrl) {
+    public UrlEntity save(final String fullUrl) {
         return Optional.ofNullable(fullUrl)
                 .filter(not(String::isBlank))
                 .map(this::generate)
@@ -46,7 +47,7 @@ public class UrlService {
     }
 
 
-    public Url generate(String fullUrl) {
+    public UrlEntity generate(String fullUrl) {
         char[] map = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
 
         StringBuilder shortUrl = new StringBuilder();
@@ -54,20 +55,19 @@ public class UrlService {
         long n = getNextAvailableIndex();
 
         while (n > 0) {
-
             shortUrl.append(map[(int) (n % 62L)]);
             n = n / 62;
         }
-        Url url = new Url();
-        url.setShortUrl(shortUrl.toString());
-        url.setFullUrl(fullUrl);
-        url.setCreatedAt(LocalDateTime.now());
+        UrlEntity urlEntity = new UrlEntity();
+        urlEntity.setShortUrl(shortUrl.toString());
+        urlEntity.setFullUrl(fullUrl);
+        urlEntity.setCreatedAt(LocalDateTime.now());
 
-        return url;
+        return urlEntity;
     }
 
     private Long getNextAvailableIndex() {
-        Url lastEntity = shortUrlRepository.findTopByOrderByIdDesc(); // Find the last entity
+        UrlEntity lastEntity = shortUrlRepository.findTopByOrderByIdDesc(); // Find the last entity
         if (lastEntity != null) {
             return lastEntity.getId() + 1; // Increment the last ID
         } else {

@@ -9,19 +9,19 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "urls")
-public class Url {
+public class UrlEntity {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "full_url")
+    @Column(name = "full_url", columnDefinition = "VARCHAR(255) COLLATE utf8_bin", unique = true)
     @Size(min = 5, max = 16, message = "fullUrl should be between 1 and 20 characters")
     @NotBlank
     private String fullUrl;
 
-    @Column(name = "short_url")
+    @Column(name = "short_url", columnDefinition = "VARCHAR(255) COLLATE utf8_bin")
     @Size(max = 4, message = "shortUrl should be between 1 and 4 characters")
     @NotBlank
     private String shortUrl;

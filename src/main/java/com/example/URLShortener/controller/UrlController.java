@@ -1,7 +1,7 @@
 package com.example.URLShortener.controller;
 
 import com.example.URLShortener.util.Limits;
-import com.example.URLShortener.models.Url;
+import com.example.URLShortener.models.UrlEntity;
 import com.example.URLShortener.services.UrlService;
 
 
@@ -29,24 +29,26 @@ public class UrlController {
 
     @GetMapping("/full")
     public List<String> getFullUrls() {
-        return urlService.findAll().stream().map(Url::getFullUrl).collect(Collectors.toList());
+        return urlService.findAll().stream().map(UrlEntity::getFullUrl).collect(Collectors.toList());
     }
 
     @GetMapping("/short")
     public List<String> getShortUrls() {
-        return urlService.findAll().stream().map(Url::getShortUrl).collect(Collectors.toList());
+        return urlService.findAll().stream().map(UrlEntity::getShortUrl).collect(Collectors.toList());
     }
 
     @PostMapping("/full/{fullUrl}")
     public String receiveShort(@PathVariable @Validated @NotBlank(message = "The string is blank") @Size(min = Limits.FULL_URL_MIN_SIZE, max = Limits.FULL_URL_MAX_SIZE, message = "The URL size is invalid") final String fullUrl) {
-        Url ourUrl = urlService.findByFullUrl(fullUrl).orElse(urlService.save(fullUrl));
-        return ourUrl.getShortUrl();
+        UrlEntity ourUrlEntity = urlService.findByFullUrl(fullUrl).orElseGet(() -> urlService.save(fullUrl));
+
+
+        return ourUrlEntity.getShortUrl();
     }
 
     @PostMapping("/short/{shortUrl}")
     public String receiveFull(@PathVariable @Validated @NotBlank(message = "The url is blank") @Size(max = Limits.SHORT_URL_MAX_SIZE) String shortUrl) {
-        Url ourUrl = urlService.findByShortUrl(shortUrl);
-        return ourUrl.getFullUrl();
+        UrlEntity ourUrlEntity = urlService.findByShortUrl(shortUrl);
+        return ourUrlEntity.getFullUrl();
 
     }
 
