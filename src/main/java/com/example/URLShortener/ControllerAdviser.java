@@ -1,6 +1,5 @@
 package com.example.URLShortener;
 
-
 import com.example.URLShortener.util.UrlErrorResponse;
 import com.example.URLShortener.util.UrlNotFoundException;
 import jakarta.validation.ConstraintViolationException;
@@ -19,17 +18,15 @@ public class ControllerAdviser {
                 "this url is invalid",
                 System.currentTimeMillis()
         );
-
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);//404
     }
+
     @ExceptionHandler
     private ResponseEntity<UrlErrorResponse> handleException(UrlNotFoundException e) {
         UrlErrorResponse response = new UrlErrorResponse(
                 "this url is not found",
                 System.currentTimeMillis()
         );
-
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);//404
-
     }
 }

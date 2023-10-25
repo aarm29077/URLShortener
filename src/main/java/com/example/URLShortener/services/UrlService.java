@@ -6,12 +6,10 @@ import com.example.URLShortener.util.UrlNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Predicate;
+
 
 import static java.util.function.Predicate.not;
 
@@ -40,7 +38,7 @@ public class UrlService {
 
     @Transactional
     public Url save(final String fullUrl) {
-        return   Optional.ofNullable(fullUrl)
+        return Optional.ofNullable(fullUrl)
                 .filter(not(String::isBlank))
                 .map(this::generate)
                 .map(shortUrlRepository::save)

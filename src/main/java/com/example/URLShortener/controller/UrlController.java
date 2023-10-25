@@ -38,19 +38,14 @@ public class UrlController {
     }
 
     @PostMapping("/full/{fullUrl}")
-    public String receiveShort(@PathVariable @Validated @NotBlank(message = "The string is blank") @Size(min = Limits.FULL_URL_MIN_SIZE, max = Limits.FULL_URL_MAX_SIZE,message = "The URL size is invalid") final String fullUrl) {
+    public String receiveShort(@PathVariable @Validated @NotBlank(message = "The string is blank") @Size(min = Limits.FULL_URL_MIN_SIZE, max = Limits.FULL_URL_MAX_SIZE, message = "The URL size is invalid") final String fullUrl) {
         Url ourUrl = urlService.findByFullUrl(fullUrl).orElse(urlService.save(fullUrl));
-
         return ourUrl.getShortUrl();
-
-
     }
 
     @PostMapping("/short/{shortUrl}")
     public String receiveFull(@PathVariable @Validated @NotBlank(message = "The url is blank") @Size(max = Limits.SHORT_URL_MAX_SIZE) String shortUrl) {
-
         Url ourUrl = urlService.findByShortUrl(shortUrl);
-
         return ourUrl.getFullUrl();
 
     }

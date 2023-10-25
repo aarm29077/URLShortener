@@ -2,7 +2,6 @@ package com.example.URLShortener.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -23,7 +22,7 @@ public class Url {
     private String fullUrl;
 
     @Column(name = "short_url")
-    @Size(max = 4,message = "shortUrl should be between 1 and 4 characters")
+    @Size(max = 4, message = "shortUrl should be between 1 and 4 characters")
     @NotBlank
     private String shortUrl;
 
@@ -57,7 +56,6 @@ public class Url {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
-
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.example.URLShortener.dto;
 
-
 import jakarta.validation.constraints.NotEmpty;
 
 public class UrlDTO {
