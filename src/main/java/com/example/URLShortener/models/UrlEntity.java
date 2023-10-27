@@ -1,5 +1,6 @@
 package com.example.URLShortener.models;
 
+import com.example.URLShortener.util.Limits;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -17,12 +18,12 @@ public class UrlEntity {
     private Long id;
 
     @Column(name = "full_url", columnDefinition = "VARCHAR(255) COLLATE utf8_bin", unique = true)
-    @Size(min = 5, max = 16, message = "fullUrl should be between 1 and 20 characters")
+    @Size(min = Limits.FULL_URL_MIN_SIZE, max = Limits.FULL_URL_MAX_SIZE, message = "fullUrl should be between 1 and 20 characters")
     @NotBlank
     private String fullUrl;
 
     @Column(name = "short_url", columnDefinition = "VARCHAR(255) COLLATE utf8_bin")
-    @Size(max = 4, message = "shortUrl should be between 1 and 4 characters")
+    @Size(max = Limits.SHORT_URL_MAX_SIZE, message = "shortUrl should be between 1 and 4 characters")
     @NotBlank
     private String shortUrl;
 
